@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} · {{ site.name }}{% endblock %}
+
+{% block content %}
+<div class="read-progress" aria-hidden="true"><span id="readBar"></span></div>
+
+<article class="container narrow post-wrap">
+  <nav class="crumb">
+    <a href="{{ url_for('index') }}">首页</a>
+    <i aria-hidden="true">/</i>
+    <a href="{{ url_for('blog') }}">文章</a>
+    <i aria-hidden="true">/</i>
+    <span>{{ post.category }}</span>
+  </nav>
+
+  <div class="article glass-card">
+    <header class="article-head">
+      <div class="post-top">
+        <span class="chip chip-cat">{{ post.category }}</span>
+        <time datetime="{{ post.date }}">{{ post.date | date_cn }}</time>
+      </div>
+      <h1>{{ post.title }}</h1>
+      <div class="article-meta">
+        <span>{{ post.views }} 次阅读</span>
+        <i aria-hidden="true"></i>
+        <span>{{ post.words }} 字</span>
+        <i aria-hidden="true"></i>
+        <span>约 {{ post.read_minutes }} 分钟</span>
+      </div>
+      <div class="post-tags">
+        {% for tag in post.tags %}
+          <a class="chip chip-tag" href="{{ url_for('blog', tag=tag) }}"># {{ tag }}</a>
+        {% endfor %}
+      </div>
+    </header>
+
+    <div class="prose" id="articleBody">
+      {{ post.html }}
+    </div>
+
+    <footer class="article-foot">
+      <div class="sign-off">
+        <span class="sign-line" aria-hidden="true"></span>
+        <p>写于 {{ post.date | date_cn }} · {{ profile.nickname }}</p>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="{{ url_for('blog') }}">← 回到文章列表</a>
+    </footer>
+  </div>
+
+  {% if newer or older %}
+  <div class="post-nav">
+    {% if newer %}
+      <a class="nav-card glass-card" href="{{ url_for('post_detail', slug=newer.slug) }}">
+        <span class="nav-label">← 较新一篇</span>
+        <strong>{{ newer.title }}</strong>
+      </a>
+    {% endif %}
+    {% if older %}
+      <a class="nav-card glass-card {{ 'is-right' if newer else '' }}" href="{{ url_for('post_detail', slug=older.slug) }}">
+        <span class="nav-label">较旧一篇 →</span>
+        <strong>{{ older.title }}</strong>
+      </a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% if related %}
+  <section class="related">
+    <p class="eyebrow">YOU MAY ALSO LIKE</p>
+    <h2>相关的几篇</h2>
+    <div class="related-grid">
+      {% for item in related %}
+        <a class="related-card glass-card" href="{{ url_for('post_detail', slug=item.slug) }}">
+          <span class="chip chip-cat">{{ item.category }}</span>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.excerpt }}</p>
+          <span class="post-link">继续读 →</span>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</article>
+{% endblock %}

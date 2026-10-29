@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}关于我 · {{ site.name }}{% endblock %}
+
+{% block content %}
+<section class="container about-hero glass-card">
+  <div class="about-hero-copy">
+    <p class="eyebrow">ABOUT ME</p>
+    <h1>{{ profile.nickname }}<span class="slash">/</span>{{ profile.name }}</h1>
+    <p class="about-quote">在这里，记录生活的点点滴滴。</p>
+    <p class="hero-lead">{{ profile.bio }}</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('blog') }}">去看看文章</a>
+      <a class="btn btn-ghost" href="mailto:{{ profile.contacts[0].value }}">写封信给我</a>
+    </div>
+  </div>
+  <div class="about-hero-art">
+    <div class="sky-window tall">
+      <span class="window-sun"></span>
+      <span class="window-cloud w1"></span>
+      <span class="window-cloud w2"></span>
+      <span class="window-hill"></span>
+      <div class="avatar-ring large">
+        <img src="{{ url_for('static', filename=profile.avatar) }}" alt="{{ profile.name }}的头像">
+      </div>
+      <span class="window-caption">{{ site.location }} · 避疯港建于 {{ site.since }}</span>
+    </div>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="about-body glass-card">
+    <p class="eyebrow">A FEW WORDS</p>
+    <h2>关于我</h2>
+    {% for paragraph in profile.intro %}
+      <p class="body-text">{{ paragraph }}</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">WHAT I DO</p>
+      <h2>我在学什么</h2>
+      <p class="section-sub">进度条是给自己看的，不是给别人打分的。</p>
+    </div>
+  </div>
+  <div class="skill-grid">
+    {% for skill in profile.skills %}
+      <div class="skill-card glass-card reveal" style="--delay: {{ loop.index0 * 80 }}ms">
+        <div class="skill-head">
+          <strong>{{ skill.name }}</strong>
+          <span>{{ skill.level }}%</span>
+        </div>
+        <div class="skill-bar"><span style="width: {{ skill.level }}%"></span></div>
+        <p>{{ skill.note }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">TIMELINE</p>
+      <h2>走过来的几步</h2>
+    </div>
+  </div>
+  <ol class="timeline">
+    {% for item in profile.timeline %}
+      <li class="timeline-item reveal" style="--delay: {{ loop.index0 * 80 }}ms">
+        <span class="timeline-dot" aria-hidden="true"></span>
+        <time>{{ item.date }}</time>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.desc }}</p>
+      </li>
+    {% endfor %}
+  </ol>
+</section>
+
+<section class="container section">
+  <div class="contact-card glass-card">
+    <div>
+      <p class="eyebrow">SAY HI</p>
+      <h2>聊聊？</h2>
+      <p class="section-sub">关于代码、关于写字，或者只是路过打个招呼，都欢迎。</p>
+    </div>
+    <div class="contact-grid">
+      {% for item in profile.contacts %}
+        <a class="contact-item" href="{{ item.url }}" {{ 'target="_blank" rel="noopener"' if item.url.startswith('http') else '' }}>
+          <span class="contact-label">{{ item.label }}</span>
+          <strong>{{ item.value }}</strong>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ site.name }} · {{ site.subtitle }}{% endblock %}</title>
+  <meta name="description" content="{{ site.description }}">
+  <meta name="theme-color" content="{{ site.theme_color }}">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body data-page="{{ active }}">
+
+  <!-- 会飘的云和暖光，纯装饰 -->
+  <div class="sky" aria-hidden="true">
+    <div class="sky-wash"></div>
+    <div class="sun"></div>
+    <svg class="cloud cloud-a" viewBox="0 0 420 140" preserveAspectRatio="none">
+      <g fill="#ffffff" opacity=".82">
+        <ellipse cx="120" cy="92" rx="105" ry="38"></ellipse>
+        <ellipse cx="205" cy="66" rx="86" ry="46"></ellipse>
+        <ellipse cx="300" cy="94" rx="92" ry="34"></ellipse>
+      </g>
+    </svg>
+    <svg class="cloud cloud-b" viewBox="0 0 420 140" preserveAspectRatio="none">
+      <g fill="#ffffff" opacity=".55">
+        <ellipse cx="130" cy="90" rx="110" ry="34"></ellipse>
+        <ellipse cx="230" cy="68" rx="90" ry="42"></ellipse>
+        <ellipse cx="320" cy="92" rx="80" ry="30"></ellipse>
+      </g>
+    </svg>
+    <svg class="cloud cloud-c" viewBox="0 0 420 140" preserveAspectRatio="none">
+      <g fill="#ffffff" opacity=".38">
+        <ellipse cx="160" cy="88" rx="120" ry="30"></ellipse>
+        <ellipse cx="260" cy="66" rx="78" ry="38"></ellipse>
+      </g>
+    </svg>
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="nav-shell">
+      <a class="brand" href="{{ url_for('index') }}">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M9.5 24h13a5 5 0 0 0 .6-9.96A7.5 7.5 0 0 0 8.6 14.2 4.9 4.9 0 0 0 9.5 24Z"
+                  fill="currentColor" opacity=".9"></path>
+            <circle cx="23.5" cy="9" r="3.2" fill="#ffd977"></circle>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <strong>{{ site.name }}</strong>
+          <small>{{ site.subtitle }}</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        {% for item in nav %}
+          <a href="{{ url_for(item.endpoint) }}" class="{{ 'is-active' if active == item.key else '' }}">{{ item.label }}</a>
+        {% endfor %}
+      </nav>
+
+      <div class="nav-actions">
+        <a class="btn btn-ghost btn-sm" href="{{ url_for('blog') }}">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" class="ico">
+            <circle cx="9" cy="9" r="5.4" stroke="currentColor" stroke-width="1.6"></circle>
+            <path d="m13.2 13.2 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+          </svg>
+          找文章
+        </a>
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="展开菜单" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-mark small" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M9.5 24h13a5 5 0 0 0 .6-9.96A7.5 7.5 0 0 0 8.6 14.2 4.9 4.9 0 0 0 9.5 24Z"
+                  fill="currentColor" opacity=".9"></path>
+            <circle cx="23.5" cy="9" r="3.2" fill="#ffd977"></circle>
+          </svg>
+        </span>
+        <div>
+          <strong>{{ site.name }}</strong>
+          <p>{{ profile.headline }}。{{ site.footer_note }}。</p>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>逛一逛</h4>
+        {% for item in nav %}
+          <a href="{{ url_for(item.endpoint) }}">{{ item.label }}</a>
+        {% endfor %}
+      </div>
+
+      <div class="footer-col">
+        <h4>找到我</h4>
+        {% for link in site.socials %}
+          <a href="{{ link.url }}" {{ 'target="_blank" rel="noopener"' if link.url.startswith('http') else '' }}>{{ link.label }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© {{ today_year }} {{ profile.name }} · {{ site.name }}</span>
+      <span>共 {{ stats.posts }} 篇文章 · {{ stats.words }} 字 · 建于 {{ stats.since }}</span>
+    </div>
+  </footer>
+
+  <button class="to-top" id="toTop" type="button" aria-label="回到顶部">
+    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M10 15V5m0 0-4 4m4-4 4 4" stroke="currentColor" stroke-width="1.7"
+            stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </button>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

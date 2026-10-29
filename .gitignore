@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# 虚拟环境
+.venv/
+venv/
+
+# 密钥 / 环境变量（绝不进仓库）
+.env
+
+# IDE / 工具
+.idea/
+.workbuddy/
+
+# 运行时数据（阅读数统计，服务器会自动重建）
+data/views.json
+data/views.json.tmp

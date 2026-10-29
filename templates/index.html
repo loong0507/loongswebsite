@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}{{ site.name }} · {{ profile.name }}的个人网站{% endblock %}
+
+{% block content %}
+<!-- ======================= 首屏 ======================= -->
+<section class="container hero-wrap">
+  <div class="hero glass-card">
+    <div class="hero-copy">
+      <p class="eyebrow">WELCOME TO MY HARBOR</p>
+      <h1>欢迎来到<br><em>我的避疯港</em></h1>
+      <p class="hero-lead">
+        我是{{ profile.name }}，网名{{ profile.nickname }}。AI正拖着我进步，<br>
+        冗杂的世界，每个人都需要一片净土。
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#recent">
+          向下滚动
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" class="ico">
+            <path d="M10 4v11m0 0 4-4m-4 4-4-4" stroke="currentColor" stroke-width="1.7"
+                  stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
+        <a class="btn btn-ghost" href="{{ url_for('blog') }}">读几篇文字</a>
+      </div>
+      <ul class="hero-facts">
+        <li><strong>{{ stats.posts }}</strong><span>篇文章</span></li>
+        <li><strong>{{ stats.days }}</strong><span>天的记录</span></li>
+        <li><strong>{{ stats.tags }}</strong><span>个标签</span></li>
+      </ul>
+    </div>
+
+    <div class="hero-visual">
+      <div class="sky-window">
+        <span class="window-sun"></span>
+        <span class="window-cloud w1"></span>
+        <span class="window-cloud w2"></span>
+        <span class="window-hill"></span>
+        <div class="avatar-ring">
+          <img src="{{ url_for('static', filename=profile.avatar) }}" alt="{{ profile.name }}的头像">
+        </div>
+      </div>
+
+      <figure class="quote-card">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>{{ profile.quote.text }}</blockquote>
+        <figcaption>— {{ profile.quote.from }}</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 最近在写 ======================= -->
+<section class="container section" id="recent">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">RECENT POSTS</p>
+      <h2>最近在写</h2>
+      <p class="section-sub">一些技术笔记，一些生活碎片，都是认真活过的证据。</p>
+    </div>
+    <a class="btn btn-soft" href="{{ url_for('blog') }}">
+      全部文章
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" class="ico">
+        <path d="M4 10h11m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="1.7"
+              stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </a>
+  </div>
+
+  <div class="post-grid">
+    {% for post in recent %}
+    <article class="post-card glass-card reveal" style="--delay: {{ loop.index0 * 90 }}ms">
+      <div class="post-top">
+        <span class="chip chip-cat">{{ post.category }}</span>
+        <time class="post-date" datetime="{{ post.date }}">{{ post.date }}</time>
+      </div>
+      <h3 class="post-title">
+        <a href="{{ url_for('post_detail', slug=post.slug) }}">{{ post.title }}</a>
+      </h3>
+      <p class="post-excerpt">{{ post.excerpt }}</p>
+      <div class="post-tags">
+        {% for tag in post.tags %}
+          <a class="chip chip-tag" href="{{ url_for('blog', tag=tag) }}"># {{ tag }}</a>
+        {% endfor %}
+      </div>
+      <div class="post-foot">
+        <span class="post-meta">{{ post.views }} 次阅读 · {{ post.words }} 字 · {{ post.read_minutes }} 分钟</span>
+        <a class="post-link" href="{{ url_for('post_detail', slug=post.slug) }}">阅读全文 →</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ======================= 关于我 ======================= -->
+<section class="container section">
+  <div class="about-band glass-card reveal">
+    <div class="about-profile">
+      <img class="avatar-sm" src="{{ url_for('static', filename=profile.avatar) }}" alt="{{ profile.name }}">
+      <div>
+        <p class="eyebrow">ABOUT ME</p>
+        <h2>{{ profile.nickname }} / {{ profile.name }}</h2>
+        <p class="about-quote">在这里，记录生活的点点滴滴。</p>
+        <p class="about-bio">{{ profile.bio }}</p>
+        <p class="about-facts">{{ site.location }} · 避疯港建于 {{ site.since }} · {{ stats.posts }} 篇文章</p>
+      </div>
+    </div>
+
+    <div class="about-stats">
+      <div class="stat"><strong>{{ stats.posts }}</strong><span>文章</span></div>
+      <div class="stat"><strong>{{ stats.tags }}</strong><span>标签</span></div>
+      <div class="stat"><strong>{{ stats.categories }}</strong><span>分类</span></div>
+      <div class="stat"><strong>{{ stats.views }}</strong><span>浏览</span></div>
+    </div>
+
+    <div class="now-cards">
+      <div class="now-card">
+        <span class="now-label">正在做</span>
+        <p>{{ profile.now.doing }}</p>
+      </div>
+      <div class="now-card">
+        <span class="now-label">最近在读</span>
+        <p>{{ profile.now.reading }}</p>
+      </div>
+      <div class="now-card">
+        <span class="now-label">计划</span>
+        <p>{{ profile.now.planning }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

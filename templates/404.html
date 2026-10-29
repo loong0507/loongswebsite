@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}找不到这页 · {{ site.name }}{% endblock %}
+
+{% block content %}
+<section class="container notfound glass-card">
+  <p class="eyebrow">404 · LOST IN THE CLOUDS</p>
+  <h1>这朵云飘走了</h1>
+  <p class="section-sub">
+    你要找的页面不在小窝里，可能是我改地址改忘了。<br>
+    要不先回首页坐一会儿？
+  </p>
+  <div class="hero-actions center">
+    <a class="btn btn-primary" href="{{ url_for('index') }}">回首页</a>
+    <a class="btn btn-ghost" href="{{ url_for('blog') }}">去文章列表</a>
+  </div>
+</section>
+{% endblock %}
